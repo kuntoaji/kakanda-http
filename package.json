@@ -1,0 +1,9 @@
+{
+  "name": "kakanda-http",
+  "version": "1.0.0",
+  "description": "HTTP status code reference",
+  "main": "index.js",
+  "repository": "https://github.com/kuntoaji/kakanda-http",
+  "author": "Kunto Aji. K",
+  "license": "MIT"
+}
