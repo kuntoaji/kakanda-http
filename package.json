@@ -20,6 +20,6 @@
   },
   "scripts": {
     "build": "./node_modules/webpack/bin/webpack.js",
-    "server": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --progress --colors"
+    "server": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --progress --colors --hot --inline --output-public-path=/build/"
   }
 }
