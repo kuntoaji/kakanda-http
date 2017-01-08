@@ -21505,6 +21505,12 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _HTTP_STATUSES = __webpack_require__(179);
+
+	var _HTTP_STATUSES2 = _interopRequireDefault(_HTTP_STATUSES);
+
+	__webpack_require__(180);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -21516,19 +21522,79 @@
 	var KakandaHTTP = function (_Component) {
 	  _inherits(KakandaHTTP, _Component);
 
-	  function KakandaHTTP() {
+	  function KakandaHTTP(props) {
 	    _classCallCheck(this, KakandaHTTP);
 
-	    return _possibleConstructorReturn(this, (KakandaHTTP.__proto__ || Object.getPrototypeOf(KakandaHTTP)).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, (KakandaHTTP.__proto__ || Object.getPrototypeOf(KakandaHTTP)).call(this, props));
+
+	    _this.state = { searchText: '' };
+	    return _this;
 	  }
 
 	  _createClass(KakandaHTTP, [{
+	    key: 'handleChange',
+	    value: function handleChange(e) {
+	      this.setState({ searchText: e.target.value });
+	    }
+	  }, {
+	    key: 'httpStatuses',
+	    value: function httpStatuses() {
+	      var searchString = this.state.searchText.trim().toLowerCase();
+	      var result = _HTTP_STATUSES2.default;
+
+	      if (searchString.length > 0) {
+	        result = result.filter(function (httpStatus) {
+	          return httpStatus.status_code.match(searchString) || httpStatus.reason_phrase.toLowerCase().match(searchString);
+	        });
+	      }
+
+	      return result;
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
-	        'h1',
-	        null,
-	        'Aloha Baloha'
+	        'div',
+	        { className: 'kakanda-http' },
+	        _react2.default.createElement('input', { type: 'text', value: this.state.searchText, onChange: this.handleChange.bind(this), placeholder: 'Search HTTP status code or status message', className: 'kakanda-http__search' }),
+	        _react2.default.createElement(
+	          'ul',
+	          { className: 'kakanda-http__result' },
+	          this.httpStatuses().map(function (httpStatus) {
+	            return _react2.default.createElement(
+	              'li',
+	              { key: httpStatus.status_code, className: 'kakanda-http__result__item' },
+	              _react2.default.createElement(
+	                'aside',
+	                { className: 'kakanda-http__result__item__status-code' },
+	                _react2.default.createElement(
+	                  'span',
+	                  null,
+	                  httpStatus.status_code
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'article',
+	                { className: 'kakanda-http__result__item__explanation' },
+	                _react2.default.createElement(
+	                  'h1',
+	                  null,
+	                  httpStatus.reason_phrase
+	                ),
+	                _react2.default.createElement(
+	                  'p',
+	                  null,
+	                  httpStatus.one_liner
+	                ),
+	                _react2.default.createElement(
+	                  'a',
+	                  { href: httpStatus.defined_in },
+	                  httpStatus.defined_in
+	                )
+	              )
+	            );
+	          })
+	        )
 	      );
 	    }
 	  }]);
@@ -21537,6 +21603,572 @@
 	}(_react.Component);
 
 	exports.default = KakandaHTTP;
+
+/***/ },
+/* 179 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	var HTTP_STATUSES = [{
+	    "status_code": "100",
+	    "reason_phrase": "Continue",
+	    "one_liner": "The server has received the request headers, and that the client should proceed to send the request body",
+	    "defined_in": "http://tools.ietf.org/html/rfc7231#section-6.2.1"
+	}, {
+	    "status_code": "101",
+	    "reason_phrase": "Switching Protocols",
+	    "one_liner": "The requester has asked the server to switch protocols and the server is acknowledging that it will do so",
+	    "defined_in": "http://tools.ietf.org/html/rfc7231#section-6.2.2"
+	}, {
+	    "status_code": "200",
+	    "reason_phrase": "OK",
+	    "one_liner": "Standard response for successful HTTP requests",
+	    "defined_in": "http://tools.ietf.org/html/rfc7231#section-6.3.1"
+	}, {
+	    "status_code": "201",
+	    "reason_phrase": "Created",
+	    "one_liner": "The request has been fulfilled and resulted in a new resource being created",
+	    "defined_in": "http://tools.ietf.org/html/rfc7231#section-6.3.2"
+	}, {
+	    "status_code": "202",
+	    "reason_phrase": "Accepted",
+	    "one_liner": "The request has been accepted for processing, but the processing has not been completed",
+	    "defined_in": "http://tools.ietf.org/html/rfc7231#section-6.3.3"
+	}, {
+	    "status_code": "203",
+	    "reason_phrase": "Non-Authoritative Information",
+	    "one_liner": "The server successfully processed the request, but is returning information that may be from another source",
+	    "defined_in": "http://tools.ietf.org/html/rfc7231#section-6.3.4"
+	}, {
+	    "status_code": "204",
+	    "reason_phrase": "No Content",
+	    "one_liner": "The server successfully processed the request, but is not returning any content",
+	    "defined_in": "http://tools.ietf.org/html/rfc7231#section-6.3.5"
+	}, {
+	    "status_code": "205",
+	    "reason_phrase": "Reset Content",
+	    "one_liner": "The server successfully processed the request, but is not returning any content. Unlike a 204 response, this response requires that the requester reset the document view",
+	    "defined_in": "http://tools.ietf.org/html/rfc7231#section-6.3.6"
+	}, {
+	    "status_code": "206",
+	    "reason_phrase": "Partial Content",
+	    "one_liner": "The server is delivering only part of the resource (byte serving) due to a range header sent by the client",
+	    "defined_in": "http://tools.ietf.org/html/rfc7233#section-4.1"
+	}, {
+	    "status_code": "300",
+	    "reason_phrase": "Multiple Choices",
+	    "one_liner": "Indicates multiple options for the resource that the client may follow",
+	    "defined_in": "http://tools.ietf.org/html/rfc7231#section-6.4.1"
+	}, {
+	    "status_code": "301",
+	    "reason_phrase": "Moved Permanently",
+	    "one_liner": "This and all future requests should be directed to the given URI",
+	    "defined_in": "http://tools.ietf.org/html/rfc7231#section-6.4.2"
+	}, {
+	    "status_code": "302",
+	    "reason_phrase": "Found",
+	    "one_liner": "The target resource resides temporarily under a different URI",
+	    "defined_in": "http://tools.ietf.org/html/rfc7231#section-6.4.3"
+	}, {
+	    "status_code": "303",
+	    "reason_phrase": "See Other",
+	    "one_liner": "The server is redirecting to a different URI which accesses the same resource",
+	    "defined_in": "http://tools.ietf.org/html/rfc7231#section-6.4.4"
+	}, {
+	    "status_code": "304",
+	    "reason_phrase": "Not Modified",
+	    "one_liner": "There is no need to retransmit the resource, since the client still has a previously-downloaded copy",
+	    "defined_in": "http://tools.ietf.org/html/rfc7232#section-4.1"
+	}, {
+	    "status_code": "305",
+	    "reason_phrase": "Use Proxy",
+	    "one_liner": "The requested resource is only available through a proxy, whose address is provided in the response",
+	    "defined_in": "http://tools.ietf.org/html/rfc7231#section-6.4.5"
+	}, {
+	    "status_code": "307",
+	    "reason_phrase": "Temporary Redirect",
+	    "one_liner": "Subsequent requests should use the specified proxy",
+	    "defined_in": "http://tools.ietf.org/html/rfc7231#section-6.4.7"
+	}, {
+	    "status_code": "400",
+	    "reason_phrase": "Bad Request",
+	    "one_liner": "The request could not be understood by the server due to malformed syntax",
+	    "defined_in": "http://tools.ietf.org/html/rfc7231#section-6.5.1"
+	}, {
+	    "status_code": "401",
+	    "reason_phrase": "Unauthorized",
+	    "one_liner": "Authentication is required and has failed or has not yet been provided",
+	    "defined_in": "http://tools.ietf.org/html/rfc7235#section-3.1"
+	}, {
+	    "status_code": "402",
+	    "reason_phrase": "Payment Required",
+	    "one_liner": "The 402 (Payment Required) status code is reserved for future use",
+	    "defined_in": "http://tools.ietf.org/html/rfc7231#section-6.5.2"
+	}, {
+	    "status_code": "403",
+	    "reason_phrase": "Forbidden",
+	    "one_liner": "The server understood the request but refuses to authorize it",
+	    "defined_in": "http://tools.ietf.org/html/rfc7231#section-6.5.3"
+	}, {
+	    "status_code": "404",
+	    "reason_phrase": "Not Found",
+	    "one_liner": "The requested resource could not be found but may be available again in the future",
+	    "defined_in": "http://tools.ietf.org/html/rfc7231#section-6.5.4"
+	}, {
+	    "status_code": "405",
+	    "reason_phrase": "Method Not Allowed",
+	    "one_liner": "A request was made of a resource using a request method not supported by that resource",
+	    "defined_in": "http://tools.ietf.org/html/rfc7231#section-6.5.5"
+	}, {
+	    "status_code": "406",
+	    "reason_phrase": "Not Acceptable",
+	    "one_liner": "The requested resource is only capable of generating content not acceptable according to the Accept headers sent in the request",
+	    "defined_in": "http://tools.ietf.org/html/rfc7231#section-6.5.6"
+	}, {
+	    "status_code": "407",
+	    "reason_phrase": "Proxy Authentication Required",
+	    "one_liner": "The client must first authenticate itself with the proxy",
+	    "defined_in": "http://tools.ietf.org/html/rfc7235#section-3.2"
+	}, {
+	    "status_code": "408",
+	    "reason_phrase": "Request Timeout",
+	    "one_liner": "The server timed out waiting for the request",
+	    "defined_in": "http://tools.ietf.org/html/rfc7231#section-6.5.7"
+	}, {
+	    "status_code": "409",
+	    "reason_phrase": "Conflict",
+	    "one_liner": "The request could not be processed because of conflict in the request",
+	    "defined_in": "http://tools.ietf.org/html/rfc7231#section-6.5.8"
+	}, {
+	    "status_code": "410",
+	    "reason_phrase": "Gone",
+	    "one_liner": "The resource requested is no longer available and will not be available again",
+	    "defined_in": "http://tools.ietf.org/html/rfc7231#section-6.5.9"
+	}, {
+	    "status_code": "411",
+	    "reason_phrase": "Length Required",
+	    "one_liner": "The request did not specify the length of its content, which is required by the requested resource",
+	    "defined_in": "http://tools.ietf.org/html/rfc7231#section-6.5.10"
+	}, {
+	    "status_code": "412",
+	    "reason_phrase": "Precondition Failed",
+	    "one_liner": "The server does not meet one of the preconditions that the requester put on the request",
+	    "defined_in": "http://tools.ietf.org/html/rfc7232#section-4.2"
+	}, {
+	    "status_code": "413",
+	    "reason_phrase": "Payload Too Large",
+	    "one_liner": "The request is larger than the server is willing or able to process",
+	    "defined_in": "http://tools.ietf.org/html/rfc7231#section-6.5.11"
+	}, {
+	    "status_code": "414",
+	    "reason_phrase": "URI Too Long",
+	    "one_liner": "The URI provided was too long for the server to process",
+	    "defined_in": "http://tools.ietf.org/html/rfc7231#section-6.5.12"
+	}, {
+	    "status_code": "415",
+	    "reason_phrase": "Unsupported Media Type",
+	    "one_liner": "The request entity has a media type which the server or resource does not support",
+	    "defined_in": "http://tools.ietf.org/html/rfc7231#section-6.5.13"
+	}, {
+	    "status_code": "416",
+	    "reason_phrase": "Range Not Satisfiable",
+	    "one_liner": "The client has asked for a portion of the file (byte serving), but the server cannot supply that portion",
+	    "defined_in": "http://tools.ietf.org/html/rfc7233#section-4.4"
+	}, {
+	    "status_code": "417",
+	    "reason_phrase": "Expectation Failed",
+	    "one_liner": "The server cannot meet the requirements of the Expect request-header field",
+	    "defined_in": "http://tools.ietf.org/html/rfc7231#section-6.5.14"
+	}, {
+	    "status_code": "426",
+	    "reason_phrase": "Upgrade Required",
+	    "one_liner": "The client should switch to a different protocol",
+	    "defined_in": "http://tools.ietf.org/html/rfc7231#section-6.5.15"
+	}, {
+	    "status_code": "500",
+	    "reason_phrase": "Internal Server Error",
+	    "one_liner": "The server encountered an unexpected condition that prevented it from fulfilling the request",
+	    "defined_in": "http://tools.ietf.org/html/rfc7231#section-6.6.1"
+	}, {
+	    "status_code": "501",
+	    "reason_phrase": "Not Implemented",
+	    "one_liner": "The server does not support the functionality required to fulfill the request",
+	    "defined_in": "http://tools.ietf.org/html/rfc7231#section-6.6.2"
+	}, {
+	    "status_code": "502",
+	    "one_liner": "The server, while acting as a gateway or proxy, received an invalid response from an inbound server",
+	    "reason_phrase": "Bad Gateway",
+	    "defined_in": "http://tools.ietf.org/html/rfc7231#section-6.6.3"
+	}, {
+	    "status_code": "503",
+	    "reason_phrase": "Service Unavailable",
+	    "one_liner": "The server is currently unable to handle the request due to a temporary overload or scheduled maintenance",
+	    "defined_in": "http://tools.ietf.org/html/rfc7231#section-6.6.4"
+	}, {
+	    "status_code": "504",
+	    "reason_phrase": "Gateway Timeout",
+	    "one_liner": "The server, while acting as a gateway or proxy, did not receive a timely response from an upstream server",
+	    "defined_in": "http://tools.ietf.org/html/rfc7231#section-6.6.5"
+	}, {
+	    "status_code": "505",
+	    "reason_phrase": "HTTP Version Not Supported",
+	    "one_liner": "The server does not support, or refuses to support, the major version of HTTP that was used in the request",
+	    "defined_in": "http://tools.ietf.org/html/rfc7231#section-6.6.6"
+	}];
+
+	exports.default = HTTP_STATUSES;
+
+/***/ },
+/* 180 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(181);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(183)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../node_modules/css-loader/index.js!./KakandaHTTP.css", function() {
+				var newContent = require("!!./../node_modules/css-loader/index.js!./KakandaHTTP.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 181 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(182)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "body {\n  background-color: #efefef;\n}\n\n.kakanda-http {\n  width: 600px;\n  margin: 0 auto;\n  padding-top: 16px;\n  padding-bottom: 16px;\n}\n\n.kakanda-http__search {\n  display: block;\n  margin: 0;\n  width: 100%;\n  font-family: sans-serif;\n  font-size: 18px;\n  appearance: none;\n  box-shadow: none;\n  border-radius: none;\n  padding: 8px;\n  border: solid 4px #c9c9c9;\n  transition: border 0.3s;\n}\n\n.kakanda-http__search:focus {\n  outline: none;\n  border: solid 4px #969696;\n}\n\n.kakanda-http__result {\n  list-style: none;\n  list-style-position: inside;\n  padding-left: 0;\n  margin-left: 0;\n}\n\n.kakanda-http__result__item {\n  display: flex;\n  padding-right: 12px;\n  border-radius: 5px;\n  margin-bottom: 16px;\n  background: #fff;\n}\n\n.kakanda-http__result__item__status-code {\n  padding-left: 12px;\n  padding-right: 12px;\n  float: left;\n  font-size: 40px;\n  display: flex;\n  align-items : center;\n  background: #73cbec;\n}\n\n.kakanda-http__result__item__explanation {\n  margin-left: 16px;\n  padding-bottom: 16px;\n}\n\n.kakanda-http__result__explanation:after {\n  clear: left;\n}\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 182 */
+/***/ function(module, exports) {
+
+	/*
+		MIT License http://www.opensource.org/licenses/mit-license.php
+		Author Tobias Koppers @sokra
+	*/
+	// css base code, injected by the css-loader
+	module.exports = function() {
+		var list = [];
+
+		// return the list of modules as css string
+		list.toString = function toString() {
+			var result = [];
+			for(var i = 0; i < this.length; i++) {
+				var item = this[i];
+				if(item[2]) {
+					result.push("@media " + item[2] + "{" + item[1] + "}");
+				} else {
+					result.push(item[1]);
+				}
+			}
+			return result.join("");
+		};
+
+		// import a list of modules into the list
+		list.i = function(modules, mediaQuery) {
+			if(typeof modules === "string")
+				modules = [[null, modules, ""]];
+			var alreadyImportedModules = {};
+			for(var i = 0; i < this.length; i++) {
+				var id = this[i][0];
+				if(typeof id === "number")
+					alreadyImportedModules[id] = true;
+			}
+			for(i = 0; i < modules.length; i++) {
+				var item = modules[i];
+				// skip already imported module
+				// this implementation is not 100% perfect for weird media query combinations
+				//  when a module is imported multiple times with different media queries.
+				//  I hope this will never occur (Hey this way we have smaller bundles)
+				if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+					if(mediaQuery && !item[2]) {
+						item[2] = mediaQuery;
+					} else if(mediaQuery) {
+						item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+					}
+					list.push(item);
+				}
+			}
+		};
+		return list;
+	};
+
+
+/***/ },
+/* 183 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*
+		MIT License http://www.opensource.org/licenses/mit-license.php
+		Author Tobias Koppers @sokra
+	*/
+	var stylesInDom = {},
+		memoize = function(fn) {
+			var memo;
+			return function () {
+				if (typeof memo === "undefined") memo = fn.apply(this, arguments);
+				return memo;
+			};
+		},
+		isOldIE = memoize(function() {
+			return /msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase());
+		}),
+		getHeadElement = memoize(function () {
+			return document.head || document.getElementsByTagName("head")[0];
+		}),
+		singletonElement = null,
+		singletonCounter = 0,
+		styleElementsInsertedAtTop = [];
+
+	module.exports = function(list, options) {
+		if(false) {
+			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
+		}
+
+		options = options || {};
+		// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+		// tags it will allow on a page
+		if (typeof options.singleton === "undefined") options.singleton = isOldIE();
+
+		// By default, add <style> tags to the bottom of <head>.
+		if (typeof options.insertAt === "undefined") options.insertAt = "bottom";
+
+		var styles = listToStyles(list);
+		addStylesToDom(styles, options);
+
+		return function update(newList) {
+			var mayRemove = [];
+			for(var i = 0; i < styles.length; i++) {
+				var item = styles[i];
+				var domStyle = stylesInDom[item.id];
+				domStyle.refs--;
+				mayRemove.push(domStyle);
+			}
+			if(newList) {
+				var newStyles = listToStyles(newList);
+				addStylesToDom(newStyles, options);
+			}
+			for(var i = 0; i < mayRemove.length; i++) {
+				var domStyle = mayRemove[i];
+				if(domStyle.refs === 0) {
+					for(var j = 0; j < domStyle.parts.length; j++)
+						domStyle.parts[j]();
+					delete stylesInDom[domStyle.id];
+				}
+			}
+		};
+	}
+
+	function addStylesToDom(styles, options) {
+		for(var i = 0; i < styles.length; i++) {
+			var item = styles[i];
+			var domStyle = stylesInDom[item.id];
+			if(domStyle) {
+				domStyle.refs++;
+				for(var j = 0; j < domStyle.parts.length; j++) {
+					domStyle.parts[j](item.parts[j]);
+				}
+				for(; j < item.parts.length; j++) {
+					domStyle.parts.push(addStyle(item.parts[j], options));
+				}
+			} else {
+				var parts = [];
+				for(var j = 0; j < item.parts.length; j++) {
+					parts.push(addStyle(item.parts[j], options));
+				}
+				stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
+			}
+		}
+	}
+
+	function listToStyles(list) {
+		var styles = [];
+		var newStyles = {};
+		for(var i = 0; i < list.length; i++) {
+			var item = list[i];
+			var id = item[0];
+			var css = item[1];
+			var media = item[2];
+			var sourceMap = item[3];
+			var part = {css: css, media: media, sourceMap: sourceMap};
+			if(!newStyles[id])
+				styles.push(newStyles[id] = {id: id, parts: [part]});
+			else
+				newStyles[id].parts.push(part);
+		}
+		return styles;
+	}
+
+	function insertStyleElement(options, styleElement) {
+		var head = getHeadElement();
+		var lastStyleElementInsertedAtTop = styleElementsInsertedAtTop[styleElementsInsertedAtTop.length - 1];
+		if (options.insertAt === "top") {
+			if(!lastStyleElementInsertedAtTop) {
+				head.insertBefore(styleElement, head.firstChild);
+			} else if(lastStyleElementInsertedAtTop.nextSibling) {
+				head.insertBefore(styleElement, lastStyleElementInsertedAtTop.nextSibling);
+			} else {
+				head.appendChild(styleElement);
+			}
+			styleElementsInsertedAtTop.push(styleElement);
+		} else if (options.insertAt === "bottom") {
+			head.appendChild(styleElement);
+		} else {
+			throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
+		}
+	}
+
+	function removeStyleElement(styleElement) {
+		styleElement.parentNode.removeChild(styleElement);
+		var idx = styleElementsInsertedAtTop.indexOf(styleElement);
+		if(idx >= 0) {
+			styleElementsInsertedAtTop.splice(idx, 1);
+		}
+	}
+
+	function createStyleElement(options) {
+		var styleElement = document.createElement("style");
+		styleElement.type = "text/css";
+		insertStyleElement(options, styleElement);
+		return styleElement;
+	}
+
+	function createLinkElement(options) {
+		var linkElement = document.createElement("link");
+		linkElement.rel = "stylesheet";
+		insertStyleElement(options, linkElement);
+		return linkElement;
+	}
+
+	function addStyle(obj, options) {
+		var styleElement, update, remove;
+
+		if (options.singleton) {
+			var styleIndex = singletonCounter++;
+			styleElement = singletonElement || (singletonElement = createStyleElement(options));
+			update = applyToSingletonTag.bind(null, styleElement, styleIndex, false);
+			remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true);
+		} else if(obj.sourceMap &&
+			typeof URL === "function" &&
+			typeof URL.createObjectURL === "function" &&
+			typeof URL.revokeObjectURL === "function" &&
+			typeof Blob === "function" &&
+			typeof btoa === "function") {
+			styleElement = createLinkElement(options);
+			update = updateLink.bind(null, styleElement);
+			remove = function() {
+				removeStyleElement(styleElement);
+				if(styleElement.href)
+					URL.revokeObjectURL(styleElement.href);
+			};
+		} else {
+			styleElement = createStyleElement(options);
+			update = applyToTag.bind(null, styleElement);
+			remove = function() {
+				removeStyleElement(styleElement);
+			};
+		}
+
+		update(obj);
+
+		return function updateStyle(newObj) {
+			if(newObj) {
+				if(newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap)
+					return;
+				update(obj = newObj);
+			} else {
+				remove();
+			}
+		};
+	}
+
+	var replaceText = (function () {
+		var textStore = [];
+
+		return function (index, replacement) {
+			textStore[index] = replacement;
+			return textStore.filter(Boolean).join('\n');
+		};
+	})();
+
+	function applyToSingletonTag(styleElement, index, remove, obj) {
+		var css = remove ? "" : obj.css;
+
+		if (styleElement.styleSheet) {
+			styleElement.styleSheet.cssText = replaceText(index, css);
+		} else {
+			var cssNode = document.createTextNode(css);
+			var childNodes = styleElement.childNodes;
+			if (childNodes[index]) styleElement.removeChild(childNodes[index]);
+			if (childNodes.length) {
+				styleElement.insertBefore(cssNode, childNodes[index]);
+			} else {
+				styleElement.appendChild(cssNode);
+			}
+		}
+	}
+
+	function applyToTag(styleElement, obj) {
+		var css = obj.css;
+		var media = obj.media;
+
+		if(media) {
+			styleElement.setAttribute("media", media)
+		}
+
+		if(styleElement.styleSheet) {
+			styleElement.styleSheet.cssText = css;
+		} else {
+			while(styleElement.firstChild) {
+				styleElement.removeChild(styleElement.firstChild);
+			}
+			styleElement.appendChild(document.createTextNode(css));
+		}
+	}
+
+	function updateLink(linkElement, obj) {
+		var css = obj.css;
+		var sourceMap = obj.sourceMap;
+
+		if(sourceMap) {
+			// http://stackoverflow.com/a/26603875
+			css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
+		}
+
+		var blob = new Blob([css], { type: "text/css" });
+
+		var oldSrc = linkElement.href;
+
+		linkElement.href = URL.createObjectURL(blob);
+
+		if(oldSrc)
+			URL.revokeObjectURL(oldSrc);
+	}
+
 
 /***/ }
 /******/ ]);
