@@ -2,7 +2,7 @@
 
 Kakanda HTTP is an React JS application for searching HTTP status code or status message. Kakanda HTTP is inspired by [Alfred HTTP][inspiration].
 
-![kakanda-http](kakanda-http/kakanda-http.png)
+<img src="https://github.com/kuntoaji/kakanda-http/raw/master/kakanda-http.png" alt="kakanda-http" width=400>
 
 ## Installation
 * Install yarn - https://yarnpkg.com/en/docs/install
