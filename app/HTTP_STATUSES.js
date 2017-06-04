@@ -169,6 +169,11 @@ const HTTP_STATUSES = [{
     "one_liner": "The server cannot meet the requirements of the Expect request-header field",
     "defined_in": "http://tools.ietf.org/html/rfc7231#section-6.5.14"
 }, {
+    "status_code": "422",
+    "reason_phrase": "Unprocessable Entity",
+    "one_liner": "the server understands the content type of the request entity and the syntax of the request entity is correct but was unable to process the contained instructions.",
+    "defined_in": "https://tools.ietf.org/html/rfc4918#section-11.2"
+}, {
     "status_code": "426",
     "reason_phrase": "Upgrade Required",
     "one_liner": "The client should switch to a different protocol",
