@@ -20,6 +20,16 @@ Builds the app for to the build folder.
 ### yarn run build-production
 Builds the app for production to the build folder. It minified and optimizes the build for the best performance.
 
+## Known Bug
+in production build, you need to define production variable before load `build/bundle.js`
+
+```
+<script>
+  var production = 'production';
+</script>
+<script src="example.com/build/bundle.js"></script>
+```
+
 ## License
 Released under the MIT License, Copyright (c) 2017–ω Kunto Aji Kristianto.
 
