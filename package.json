@@ -21,8 +21,7 @@
     "webpack-dev-server": "^1.16.2"
   },
   "scripts": {
-    "build": "./node_modules/webpack/bin/webpack.js",
-    "build-production": "./node_modules/webpack/bin/webpack.js --optimize-minimize --define process.env.NODE_ENV='production'",
+    "build": "./node_modules/webpack/bin/webpack.js --optimize-minimize",
     "server": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --progress --colors --hot --inline --output-public-path=/build/"
   }
 }
