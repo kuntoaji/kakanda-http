@@ -14,7 +14,6 @@ Demo: <https://tools.kaklabs.com/http-status-codes.html>
 * open `localhost:8000`
 
 ## How To Build JS Modules
-* Change directory - `cd kakanda-http`
 * Run `npm install`
 * Run `npx babel modules --out-dir build --presets react-app/prod`
 * If you want to run in watch mode `npx babel --watch app --out-dir build --presets react-app/prod`
