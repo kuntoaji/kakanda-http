@@ -7,7 +7,7 @@ Demo: <https://tools.kaklabs.com/http-status-codes.html>
 
 <img src="https://github.com/kuntoaji/kakanda-http/raw/master/kakanda-http.png" alt="kakanda-http" width=400>
 
-## Installation
+## How To Run Kakanda HTTP
 * Clone repository - `git clone git@github.com:kuntoaji/kakanda-http.git`
 * Change directory - `cd kakanda-http`
 * Run web server `python -m SimpleHTTPServer`
