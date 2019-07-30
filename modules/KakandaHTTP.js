@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import HTTP_STATUSES from './HTTP_STATUSES';
-import './KakandaHTTP.css';
+'use strict';
 
-export default class KakandaHTTP extends Component {
+import HTTP_STATUSES from './HTTP_STATUSES.js';
+
+export default class KakandaHTTP extends React.Component {
   constructor(props) {
     super(props);
     this.state = {searchText: ''};

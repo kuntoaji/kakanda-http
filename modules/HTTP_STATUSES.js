@@ -1,3 +1,5 @@
+'use strict';
+
 const HTTP_STATUSES = [{
     "status_code": "100",
     "reason_phrase": "Continue",

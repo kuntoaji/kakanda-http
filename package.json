@@ -1,28 +1,24 @@
 {
   "name": "kakanda-http",
-  "version": "1.0.0",
-  "description": "HTTP status code reference",
+  "version": "2.0.0",
+  "description": "HTTP status code references",
   "main": "index.js",
-  "repository": "https://github.com/kuntoaji/kakanda-http",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kuntoaji/kakanda-http.git"
+  },
+  "keywords": [],
   "author": "Kunto Aji. K",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kuntoaji/kakanda-http/issues"
+  },
+  "homepage": "https://github.com/kuntoaji/kakanda-http#readme",
   "dependencies": {
-    "react": "^15.4.2",
-    "react-dom": "^15.4.2"
-  },
-  "devDependencies": {
-    "babel-core": "^6.21.0",
-    "babel-loader": "^6.2.10",
-    "babel-preset-es2015": "^6.18.0",
-    "babel-preset-react": "^6.16.0",
-    "css-loader": "^0.26.1",
-    "style-loader": "^0.13.1",
-    "webpack": "^1.14.0",
-    "webpack-dev-server": "^1.16.2"
-  },
-  "scripts": {
-    "build": "./node_modules/webpack/bin/webpack.js",
-    "build-production": "./node_modules/webpack/bin/webpack.js --optimize-minimize --define process.env.NODE_ENV='production'",
-    "server": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --progress --colors --hot --inline --output-public-path=/build/"
+    "babel-cli": "^6.26.0",
+    "babel-preset-react-app": "^3.1.2"
   }
 }
