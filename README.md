@@ -1,7 +1,7 @@
 # Kakanda HTTP
 
 Kakanda HTTP is a simple React JS application for searching HTTP status code or status message. Kakanda HTTP is inspired by [Alfred HTTP][inspiration].
-Kakanda HHTP does not require Javascript bundler and embrace the use [JS modules feature from browsers][js_modules].
+Kakanda HHTP does not require Javascript bundler. It embraces the use of [JS modules feature from browsers][js_modules].
 
 Demo: <https://tools.kaklabs.com/http-status-codes.html>
 
@@ -10,8 +10,8 @@ Demo: <https://tools.kaklabs.com/http-status-codes.html>
 ## How To Run Kakanda HTTP
 * Clone repository - `git clone git@github.com:kuntoaji/kakanda-http.git`
 * Change directory - `cd kakanda-http`
-* Run web server `python -m SimpleHTTPServer`
-* open `localhost:8000`
+* Run web server. If your machine has python, you can run `python -m SimpleHTTPServer`.
+* Open localhost from your browser. Example: `localhost:8000`.
 
 ## How To Build JS Modules
 * Run `npm install`
