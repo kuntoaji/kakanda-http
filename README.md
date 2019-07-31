@@ -7,14 +7,13 @@ Demo: <https://tools.kaklabs.com/http-status-codes.html>
 
 <img src="https://github.com/kuntoaji/kakanda-http/raw/master/kakanda-http.png" alt="kakanda-http" width=400>
 
-## Installation
+## How To Run Kakanda HTTP
 * Clone repository - `git clone git@github.com:kuntoaji/kakanda-http.git`
 * Change directory - `cd kakanda-http`
 * Run web server `python -m SimpleHTTPServer`
 * open `localhost:8000`
 
 ## How To Build JS Modules
-* Change directory - `cd kakanda-http`
 * Run `npm install`
 * Run `npx babel modules --out-dir build --presets react-app/prod`
 * If you want to run in watch mode `npx babel --watch app --out-dir build --presets react-app/prod`
