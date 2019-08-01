@@ -16,7 +16,7 @@ Demo: <https://tools.kaklabs.com/http-status-codes.html>
 ## How To Build JS Modules
 * Run `npm install`
 * Run `npx babel modules --out-dir build --presets react-app/prod`
-* If you want to run in watch mode `npx babel --watch app --out-dir build --presets react-app/prod`
+* If you want to run in watch mode `npx babel --watch modules --out-dir build --presets react-app/prod`
 
 ## License
 Released under the MIT License, Copyright (c) 2017–ω Kunto Aji Kristianto.
