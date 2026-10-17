@@ -39,7 +39,10 @@ export default function KakandaHTTP() {
                   {status.code}
                 </a>
                 <div className="kakanda-http__result__item__explanation">
-                  <h3>{status.code} {status.phrase}</h3>
+                  <h3>
+                    {status.code} {status.phrase}
+                    {status.deprecated && <span className="kakanda-http__tag kakanda-http__tag--deprecated">Deprecated</span>}
+                  </h3>
                   <p>{status.summary}</p>
                   <a href={status.reference} rel="noopener">{rfcLabel(status.reference)}</a>
                 </div>

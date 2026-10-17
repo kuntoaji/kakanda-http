@@ -35,16 +35,22 @@ test('returns no groups when nothing matches', () => {
   assert.deepEqual(groupStatuses(HTTP_STATUSES, 'no-such-status'), []);
 });
 
-test('every status has a unique code and an https RFC reference', () => {
+test('every status has a unique code and an RFC Editor reference', () => {
   const unique = new Set(HTTP_STATUSES.map((status) => status.code));
   assert.equal(unique.size, HTTP_STATUSES.length);
   for (const status of HTTP_STATUSES) {
-    assert.match(status.reference, /^https:\/\/tools\.ietf\.org\/html\/rfc\d+/);
+    assert.match(status.reference, /^https:\/\/www\.rfc-editor\.org\/rfc\/rfc\d+/);
+  }
+});
+
+test('no status cites an RFC that RFC 9110 made obsolete', () => {
+  for (const status of HTTP_STATUSES) {
+    assert.doesNotMatch(status.reference, /rfc723[1235]\b/, status.code);
   }
 });
 
 test('rfcLabel formats the RFC number and section', () => {
-  assert.equal(rfcLabel('https://tools.ietf.org/html/rfc7231#section-6.5.4'), 'RFC 7231, section 6.5.4');
-  assert.equal(rfcLabel('https://tools.ietf.org/html/rfc6585'), 'RFC 6585');
+  assert.equal(rfcLabel('https://www.rfc-editor.org/rfc/rfc9110#section-15.5.5'), 'RFC 9110, section 15.5.5');
+  assert.equal(rfcLabel('https://www.rfc-editor.org/rfc/rfc6585'), 'RFC 6585');
   assert.equal(rfcLabel('https://example.com/spec'), 'https://example.com/spec');
 });
