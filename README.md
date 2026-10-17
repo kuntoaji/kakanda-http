@@ -2,7 +2,7 @@
 
 Kakanda HTTP is a simple React application for searching HTTP status codes by code, phrase, or description. It lists every code in the IANA HTTP Status Code Registry, grouped by class, with a link to the RFC section that defines each one. Kakanda HTTP is inspired by [Alfred HTTP][inspiration].
 
-Kakanda HTTP does not require a JavaScript bundler. It uses [JS modules][js_modules] and an [import map][import_maps] to load React 19 in the browser.
+Kakanda HTTP is a static page with no third-party requests. [esbuild][esbuild] bundles the app and React 19 into one self-hosted file, `build/kakanda-http.js`, which is committed so the page runs without a build step.
 
 Demo: <https://tools.kaklabs.com/http-status-codes.html>
 
@@ -15,11 +15,11 @@ Demo: <https://tools.kaklabs.com/http-status-codes.html>
 * Open `http://localhost:8000` in your browser.
 * Link to a status code with its anchor, for example `http://localhost:8000/#404`.
 
-## How To Build JS Modules
-Requires Node.js 22.18+ or 24.11+.
+## How To Build
+Requires Node.js 22 or later.
 
 * Run `npm install`
-* Run `npm run build` to compile the JSX in `modules/` into `build/`
+* Run `npm run build` to bundle `modules/` and React into `build/kakanda-http.js`
 * Run `npm run watch` to rebuild on every change
 * Run `npm test` to run the tests
 
@@ -27,5 +27,4 @@ Requires Node.js 22.18+ or 24.11+.
 Released under the MIT License, Copyright (c) 2017–ω Kunto Aji Kristianto.
 
 [inspiration]: https://github.com/JoelQ/alfred-http
-[js_modules]: https://v8.dev/features/modules
-[import_maps]: https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/script/type/importmap
+[esbuild]: https://esbuild.github.io/
