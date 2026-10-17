@@ -1,7 +1,8 @@
 # Kakanda HTTP
 
-Kakanda HTTP is a simple React JS application for searching HTTP status code or status message. Kakanda HTTP is inspired by [Alfred HTTP][inspiration].
-Kakanda HHTP does not require Javascript bundler. It embraces the use of [JS modules feature from browsers][js_modules].
+Kakanda HTTP is a simple React application for searching HTTP status codes by code, phrase, or description. It lists every code in the IANA HTTP Status Code Registry, grouped by class, with a link to the RFC section that defines each one. Kakanda HTTP is inspired by [Alfred HTTP][inspiration].
+
+Kakanda HTTP does not require a JavaScript bundler. It uses [JS modules][js_modules] and an [import map][import_maps] to load React 19 in the browser.
 
 Demo: <https://tools.kaklabs.com/http-status-codes.html>
 
@@ -10,16 +11,21 @@ Demo: <https://tools.kaklabs.com/http-status-codes.html>
 ## How To Run Kakanda HTTP
 * Clone repository - `git clone git@github.com:kuntoaji/kakanda-http.git`
 * Change directory - `cd kakanda-http`
-* Run web server. If your machine has python, you can run `python -m SimpleHTTPServer`.
-* Open localhost from your browser. Example: `localhost:8000`.
+* Run a web server, for example `npm start` (runs `python3 -m http.server 8000`).
+* Open `http://localhost:8000` in your browser.
+* Link to a status code with its anchor, for example `http://localhost:8000/#404`.
 
 ## How To Build JS Modules
+Requires Node.js 22.18+ or 24.11+.
+
 * Run `npm install`
-* Run `npx babel modules --out-dir build --presets react-app/prod`
-* If you want to run in watch mode `npx babel --watch modules --out-dir build --presets react-app/prod`
+* Run `npm run build` to compile the JSX in `modules/` into `build/`
+* Run `npm run watch` to rebuild on every change
+* Run `npm test` to run the tests
 
 ## License
 Released under the MIT License, Copyright (c) 2017–ω Kunto Aji Kristianto.
 
 [inspiration]: https://github.com/JoelQ/alfred-http
 [js_modules]: https://v8.dev/features/modules
+[import_maps]: https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/script/type/importmap

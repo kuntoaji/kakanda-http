@@ -1,10 +1,14 @@
 {
   "name": "kakanda-http",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "HTTP status code references",
-  "main": "index.js",
+  "private": true,
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "babel modules --out-dir build",
+    "watch": "babel modules --out-dir build --watch",
+    "start": "python3 -m http.server 8000",
+    "test": "node --test"
   },
   "repository": {
     "type": "git",
@@ -17,8 +21,12 @@
     "url": "https://github.com/kuntoaji/kakanda-http/issues"
   },
   "homepage": "https://github.com/kuntoaji/kakanda-http#readme",
-  "dependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-react-app": "^3.1.2"
+  "engines": {
+    "node": "^22.18.0 || >=24.11.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^8.0.6",
+    "@babel/core": "^8.0.7",
+    "@babel/preset-react": "^8.0.1"
   }
 }

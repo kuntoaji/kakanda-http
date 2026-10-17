@@ -1,82 +1,122 @@
-<html>
+<!doctype html>
+<html lang="en">
   <head>
-    <title>Kakanda HTTP - HTTP Status Code Reference</title>
-    <meta name="description" content="complete reference for HTTP status code and HTTP status message">
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css" rel="stylesheet">
-    <script src="https://unpkg.com/react@16/umd/react.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>
-  <style>
-    body {
-      background-color: #efefef;
-    }
+    <title>Kakanda HTTP - HTTP Status Codes List and Meanings</title>
+    <meta name="description" content="Search all HTTP status codes from 1xx to 5xx. See what each response code means, with a direct link to the RFC section that defines it.">
+    <script type="importmap">
+      {
+        "imports": {
+          "react": "https://cdn.jsdelivr.net/npm/react@19.3.1/+esm",
+          "react/jsx-runtime": "https://cdn.jsdelivr.net/npm/react@19.3.1/jsx-runtime/+esm",
+          "react-dom/client": "https://cdn.jsdelivr.net/npm/react-dom@19.3.1/client/+esm"
+        }
+      }
+    </script>
+    <link rel="modulepreload" href="build/index.js">
+    <style>
+      :root {
+        --blue: #1f66c7;
+        --border: rgba(0, 0, 0, .1);
+        --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      }
 
-    .kakanda-http {
-      max-width: 90vw;
-      margin: 16px auto;
-    }
+      *, *::before, *::after { box-sizing: border-box; }
 
-    .kakanda-http__search {
-      display: block;
-      margin: 0;
-      width: 100%;
-      font-family: sans-serif;
-      font-size: 18px;
-      appearance: none;
-      box-shadow: none;
-      border-radius: none;
-      padding: 8px;
-      border: solid 4px #c9c9c9;
-      transition: border 0.3s;
-    }
+      body {
+        margin: 0;
+        background: #f4f4f4;
+        color: #111;
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        line-height: 1.5;
+      }
 
-    .kakanda-http__search:focus {
-      outline: none;
-      border: solid 4px #969696;
-    }
+      a { color: var(--blue); text-decoration: none; }
+      a:hover, a:focus { text-decoration: underline; }
 
-    .kakanda-http__result {
-      list-style: none;
-      list-style-position: inside;
-      padding-left: 0;
-      margin-left: 0;
-    }
+      :focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
 
-    .kakanda-http__result__item {
-      display: flex;
-      padding-right: 12px;
-      border-radius: 5px;
-      margin-bottom: 16px;
-      background: #fff;
-    }
+      .page { max-width: 48rem; margin: 0 auto; padding: 2rem 1rem; }
+      .page h1 { font-size: 2rem; margin: 0 0 1.5rem; }
 
-    .kakanda-http__result__item__status-code {
-      padding-left: 12px;
-      padding-right: 12px;
-      float: left;
-      font-size: 40px;
-      display: flex;
-      align-items : center;
-      background: #73cbec;
-    }
+      .kakanda-http__label { display: block; font-size: .875rem; font-weight: 700; margin-bottom: .5rem; }
 
-    .kakanda-http__result__item__explanation {
-      padding-left: 16px;
-      padding-bottom: 16px;
-      word-break: break-word;
-    }
+      .kakanda-http__search {
+        display: block;
+        width: 100%;
+        margin: 0 0 2rem;
+        padding: 1rem;
+        font: inherit;
+        font-size: 1.125rem;
+        background: #fff;
+        border: 1px solid rgba(0, 0, 0, .2);
+        border-radius: .5rem;
+        appearance: none;
+      }
 
-    .kakanda-http__result__explanation:after {
-      clear: left;
-    }
-  </style>
+      .kakanda-http__search:focus { border-color: var(--blue); outline: none; box-shadow: 0 0 0 3px rgba(31, 102, 199, .2); }
+
+      .kakanda-http__group { margin-bottom: 2rem; }
+      .kakanda-http__group__title { font-size: 1.25rem; font-weight: 600; margin: 0 0 1rem; }
+
+      .kakanda-http__result { list-style: none; padding: 0; margin: 0; }
+
+      .kakanda-http__result__item {
+        display: flex;
+        margin-bottom: .5rem;
+        overflow: hidden;
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: .5rem;
+        scroll-margin-top: 1rem;
+      }
+
+      .kakanda-http__result__item:target { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(31, 102, 199, .2); }
+
+      .kakanda-http__status {
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+        min-width: 4rem;
+        padding: 0 1rem;
+        font-family: var(--mono);
+        font-size: 1.25rem;
+        font-weight: 700;
+      }
+
+      /* Badge colors by status class, all with WCAG AA contrast. */
+      .kakanda-http__status--1 { background: #e8f1fc; color: #1d4f91; }
+      .kakanda-http__status--2 { background: #e6f4ea; color: #1e6b34; }
+      .kakanda-http__status--3 { background: #fff4e0; color: #8a5300; }
+      .kakanda-http__status--4 { background: #fdecea; color: #a1281b; }
+      .kakanda-http__status--5 { background: #f3e8fd; color: #6a2a9c; }
+
+      .kakanda-http__result__item__explanation { padding: 1rem; min-width: 0; overflow-wrap: break-word; }
+      .kakanda-http__result__item__explanation h3 { font-size: 1rem; font-weight: 600; margin: 0 0 .25rem; }
+      .kakanda-http__result__item__explanation p { font-size: .875rem; color: #555; margin: 0 0 .5rem; }
+      .kakanda-http__result__item__explanation a { font-size: .75rem; }
+
+      .kakanda-http__empty { color: #666; font-size: .875rem; }
+
+      .about { margin-top: 3rem; }
+      .about h2 { font-size: 1.25rem; font-weight: 600; }
+      .about p { max-width: 42rem; }
+      .about code { font-family: var(--mono); font-size: .875rem; }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="build/HTTP_STATUSES.js"></script>
-    <script type="module" src="build/KakandaHTTP.js"></script>
+    <main class="page">
+      <h1>HTTP Status Codes</h1>
+      <div id="root"></div>
+
+      <article class="about">
+        <h2>How to read HTTP status codes</h2>
+        <p>The first digit of a status code is its class. 1xx responses are informational, 2xx mean the request succeeded, 3xx ask the client to go somewhere else, 4xx point to a problem with the request, and 5xx point to a problem on the server.</p>
+        <p>Link straight to a code with its anchor, for example <a href="#404"><code>#404</code></a>.</p>
+      </article>
+    </main>
     <script type="module" src="build/index.js"></script>
   </body>
 </html>

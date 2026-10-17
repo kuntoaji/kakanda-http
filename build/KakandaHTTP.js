@@ -1,96 +1,62 @@
-'use strict';
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
+import { useEffect, useState } from 'react';
 import HTTP_STATUSES from './HTTP_STATUSES.js';
+import { groupStatuses, rfcLabel } from './filterStatuses.js';
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+export default function KakandaHTTP() {
+  const [query, setQuery] = useState('');
+  const groups = groupStatuses(HTTP_STATUSES, query);
 
-var KakandaHTTP = function (_React$Component) {
-  _inherits(KakandaHTTP, _React$Component);
-
-  function KakandaHTTP(props) {
-    _classCallCheck(this, KakandaHTTP);
-
-    var _this = _possibleConstructorReturn(this, (KakandaHTTP.__proto__ || Object.getPrototypeOf(KakandaHTTP)).call(this, props));
-
-    _this.state = { searchText: '' };
-    return _this;
-  }
-
-  _createClass(KakandaHTTP, [{
-    key: 'handleChange',
-    value: function handleChange(e) {
-      this.setState({ searchText: e.target.value });
-    }
-  }, {
-    key: 'httpStatuses',
-    value: function httpStatuses() {
-      var searchString = this.state.searchText.trim().toLowerCase();
-      var result = HTTP_STATUSES;
-
-      if (searchString.length > 0) {
-        result = result.filter(function (httpStatus) {
-          return httpStatus.status_code.match(searchString) || httpStatus.reason_phrase.toLowerCase().match(searchString);
-        });
-      }
-
-      return result;
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      return React.createElement(
-        'div',
-        { className: 'kakanda-http' },
-        React.createElement('input', { type: 'text', value: this.state.searchText, onChange: this.handleChange.bind(this), placeholder: 'Search HTTP status code or status message', className: 'kakanda-http__search' }),
-        React.createElement(
-          'ul',
-          { className: 'kakanda-http__result' },
-          this.httpStatuses().map(function (httpStatus) {
-            return React.createElement(
-              'li',
-              { key: httpStatus.status_code, className: 'kakanda-http__result__item' },
-              React.createElement(
-                'aside',
-                { className: 'kakanda-http__result__item__status-code' },
-                React.createElement(
-                  'span',
-                  null,
-                  httpStatus.status_code
-                )
-              ),
-              React.createElement(
-                'article',
-                { className: 'kakanda-http__result__item__explanation' },
-                React.createElement(
-                  'h1',
-                  null,
-                  httpStatus.reason_phrase
-                ),
-                React.createElement(
-                  'p',
-                  null,
-                  httpStatus.one_liner
-                ),
-                React.createElement(
-                  'a',
-                  { href: httpStatus.defined_in },
-                  httpStatus.defined_in
-                )
-              )
-            );
-          })
-        )
-      );
-    }
-  }]);
-
-  return KakandaHTTP;
-}(React.Component);
-
-export default KakandaHTTP;
+  // The list renders after page load, so the browser cannot jump to a #404 anchor on its own.
+  useEffect(() => {
+    const id = decodeURIComponent(window.location.hash.slice(1));
+    if (id) document.getElementById(id)?.scrollIntoView();
+  }, []);
+  return /*#__PURE__*/_jsxs("div", {
+    className: "kakanda-http",
+    children: [/*#__PURE__*/_jsx("label", {
+      htmlFor: "status-filter",
+      className: "kakanda-http__label",
+      children: "Search by code or message"
+    }), /*#__PURE__*/_jsx("input", {
+      id: "status-filter",
+      type: "search",
+      className: "kakanda-http__search",
+      placeholder: "404, redirect, gateway...",
+      autoComplete: "off",
+      value: query,
+      onChange: e => setQuery(e.target.value)
+    }), groups.map(group => /*#__PURE__*/_jsxs("section", {
+      className: "kakanda-http__group",
+      children: [/*#__PURE__*/_jsx("h2", {
+        className: "kakanda-http__group__title",
+        children: group.name
+      }), /*#__PURE__*/_jsx("ul", {
+        className: "kakanda-http__result",
+        children: group.statuses.map(status => /*#__PURE__*/_jsxs("li", {
+          id: status.code,
+          className: "kakanda-http__result__item",
+          children: [/*#__PURE__*/_jsx("a", {
+            href: `#${status.code}`,
+            className: `kakanda-http__status kakanda-http__status--${group.digit}`,
+            "aria-label": `Link to ${status.code} ${status.phrase}`,
+            children: status.code
+          }), /*#__PURE__*/_jsxs("div", {
+            className: "kakanda-http__result__item__explanation",
+            children: [/*#__PURE__*/_jsxs("h3", {
+              children: [status.code, " ", status.phrase]
+            }), /*#__PURE__*/_jsx("p", {
+              children: status.summary
+            }), /*#__PURE__*/_jsx("a", {
+              href: status.reference,
+              rel: "noopener",
+              children: rfcLabel(status.reference)
+            })]
+          })]
+        }, status.code))
+      })]
+    }, group.digit)), groups.length === 0 && /*#__PURE__*/_jsx("p", {
+      className: "kakanda-http__empty",
+      children: "No status codes match your search."
+    })]
+  });
+}

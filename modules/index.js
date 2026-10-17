@@ -1,6 +1,4 @@
+import { createRoot } from 'react-dom/client';
 import KakandaHTTP from './KakandaHTTP.js';
 
-ReactDOM.render(
-  <KakandaHTTP />,
-  document.getElementById('root')
-);
+createRoot(document.getElementById('root')).render(<KakandaHTTP />);
