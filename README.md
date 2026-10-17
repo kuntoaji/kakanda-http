@@ -14,6 +14,7 @@ Demo: <https://tools.kaklabs.com/http-status-codes.html>
 * Run a web server, for example `npm start` (runs `python3 -m http.server 8000`).
 * Open `http://localhost:8000` in your browser.
 * Link to a status code with its anchor, for example `http://localhost:8000/#404`.
+* Share a search with `?q=`, for example `http://localhost:8000/?q=retry-after`. Press `/` to focus the search and `Esc` to clear it.
 
 ## How To Build
 Requires Node.js 22 or later.
