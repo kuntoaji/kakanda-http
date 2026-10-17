@@ -6,8 +6,9 @@ export const STATUS_CLASSES = [
   { digit: '5', name: '5xx Server Error' },
 ];
 
-// Groups statuses by class and keeps only those whose code, phrase, summary
-// or class name contain every word of the query. Empty groups are dropped.
+// Groups statuses by class and keeps only those whose code, phrase, summary,
+// headers or class name contain every word of the query. Notes are left out
+// because they name other codes. Empty groups are dropped.
 export function groupStatuses(statuses, query) {
   const words = query.toLowerCase().split(/\s+/).filter(Boolean);
 
@@ -15,7 +16,8 @@ export function groupStatuses(statuses, query) {
     ...statusClass,
     statuses: statuses.filter((status) => {
       if (status.code[0] !== statusClass.digit) return false;
-      const text = `${status.code} ${status.phrase} ${status.summary} ${statusClass.name}`.toLowerCase();
+      const headers = status.headers?.join(' ') ?? '';
+      const text = `${status.code} ${status.phrase} ${status.summary} ${headers} ${statusClass.name}`.toLowerCase();
       return words.every((word) => text.includes(word));
     }),
   })).filter((group) => group.statuses.length > 0);

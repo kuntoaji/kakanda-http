@@ -22,6 +22,14 @@ test('matches phrase and summary case-insensitively', () => {
   assert.deepEqual(codes(groupStatuses(HTTP_STATUSES, 'rate limiting')), ['429']);
 });
 
+test('matches by response header name', () => {
+  assert.deepEqual(codes(groupStatuses(HTTP_STATUSES, 'retry-after')), ['429', '503']);
+});
+
+test('notes do not make a code match a search for another code', () => {
+  assert.deepEqual(codes(groupStatuses(HTTP_STATUSES, '403')), ['403']);
+});
+
 test('every word must match, in any order', () => {
   assert.deepEqual(codes(groupStatuses(HTTP_STATUSES, 'timeout gateway')), ['504']);
 });

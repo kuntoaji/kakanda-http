@@ -11,7 +11,8 @@ const HTTP_STATUSES = [
     code: "101",
     phrase: "Switching Protocols",
     summary: "The requester has asked the server to switch protocols and the server is acknowledging that it will do so",
-    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.2.2"
+    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.2.2",
+    headers: ["Upgrade"]
   },
   {
     code: "102",
@@ -23,19 +24,22 @@ const HTTP_STATUSES = [
     code: "103",
     phrase: "Early Hints",
     summary: "The server sends preliminary headers, usually Link headers, so the client can start preloading resources before the final response",
-    reference: "https://www.rfc-editor.org/rfc/rfc8297#section-2"
+    reference: "https://www.rfc-editor.org/rfc/rfc8297#section-2",
+    headers: ["Link"]
   },
   {
     code: "200",
     phrase: "OK",
     summary: "Standard response for successful HTTP requests",
-    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.3.1"
+    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.3.1",
+    cacheable: true
   },
   {
     code: "201",
     phrase: "Created",
     summary: "The request has been fulfilled and resulted in a new resource being created",
-    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.3.2"
+    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.3.2",
+    headers: ["Location"]
   },
   {
     code: "202",
@@ -47,13 +51,15 @@ const HTTP_STATUSES = [
     code: "203",
     phrase: "Non-Authoritative Information",
     summary: "The server successfully processed the request, but is returning information that may be from another source",
-    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.3.4"
+    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.3.4",
+    cacheable: true
   },
   {
     code: "204",
     phrase: "No Content",
     summary: "The server successfully processed the request, but is not returning any content",
-    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.3.5"
+    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.3.5",
+    cacheable: true
   },
   {
     code: "205",
@@ -65,7 +71,9 @@ const HTTP_STATUSES = [
     code: "206",
     phrase: "Partial Content",
     summary: "The server is delivering only part of the resource (byte serving) due to a range header sent by the client",
-    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.3.7"
+    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.3.7",
+    headers: ["Content-Range"],
+    cacheable: true
   },
   {
     code: "207",
@@ -89,25 +97,32 @@ const HTTP_STATUSES = [
     code: "300",
     phrase: "Multiple Choices",
     summary: "Indicates multiple options for the resource that the client may follow",
-    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.4.1"
+    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.4.1",
+    cacheable: true
   },
   {
     code: "301",
     phrase: "Moved Permanently",
     summary: "This and all future requests should be directed to the given URI",
-    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.4.2"
+    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.4.2",
+    headers: ["Location"],
+    cacheable: true,
+    note: "Clients may change a POST to a GET when they follow a 301. Use 308 to keep the request method."
   },
   {
     code: "302",
     phrase: "Found",
     summary: "The target resource resides temporarily under a different URI",
-    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.4.3"
+    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.4.3",
+    headers: ["Location"],
+    note: "Clients may change a POST to a GET when they follow a 302. Use 307 to keep the request method."
   },
   {
     code: "303",
     phrase: "See Other",
     summary: "The server is redirecting to a different URI which accesses the same resource",
-    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.4.4"
+    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.4.4",
+    headers: ["Location"]
   },
   {
     code: "304",
@@ -133,25 +148,33 @@ const HTTP_STATUSES = [
     code: "307",
     phrase: "Temporary Redirect",
     summary: "The target resource resides temporarily under a different URI, and the client must not change the request method when it follows the redirect",
-    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.4.8"
+    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.4.8",
+    headers: ["Location"],
+    note: "Like 302, but the client must keep the request method and body."
   },
   {
     code: "308",
     phrase: "Permanent Redirect",
     summary: "The target resource has a new permanent URI, and the client must not change the request method when it follows the redirect",
-    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.4.9"
+    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.4.9",
+    headers: ["Location"],
+    cacheable: true,
+    note: "Like 301, but the client must keep the request method and body."
   },
   {
     code: "400",
     phrase: "Bad Request",
     summary: "The request could not be understood by the server due to malformed syntax",
-    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.5.1"
+    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.5.1",
+    note: "Use 400 for malformed syntax. Use 422 when the syntax is valid but the content fails validation."
   },
   {
     code: "401",
     phrase: "Unauthorized",
     summary: "Authentication is required and has failed or has not yet been provided",
-    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.5.2"
+    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.5.2",
+    headers: ["WWW-Authenticate"],
+    note: "Use 401 when the client is not authenticated. Use 403 when the client is authenticated but has no permission."
   },
   {
     code: "402",
@@ -163,19 +186,24 @@ const HTTP_STATUSES = [
     code: "403",
     phrase: "Forbidden",
     summary: "The server understood the request but refuses to authorize it",
-    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.5.4"
+    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.5.4",
+    note: "Use 403 when the client is authenticated but has no permission. Use 401 when the client is not authenticated."
   },
   {
     code: "404",
     phrase: "Not Found",
     summary: "The requested resource could not be found but may be available again in the future",
-    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.5.5"
+    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.5.5",
+    cacheable: true,
+    note: "Use 410 instead when you know the resource was removed on purpose and will not come back."
   },
   {
     code: "405",
     phrase: "Method Not Allowed",
     summary: "A request was made of a resource using a request method not supported by that resource",
-    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.5.6"
+    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.5.6",
+    headers: ["Allow"],
+    cacheable: true
   },
   {
     code: "406",
@@ -187,7 +215,8 @@ const HTTP_STATUSES = [
     code: "407",
     phrase: "Proxy Authentication Required",
     summary: "The client must first authenticate itself with the proxy",
-    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.5.8"
+    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.5.8",
+    headers: ["Proxy-Authenticate"]
   },
   {
     code: "408",
@@ -205,7 +234,9 @@ const HTTP_STATUSES = [
     code: "410",
     phrase: "Gone",
     summary: "The resource requested is no longer available and will not be available again",
-    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.5.11"
+    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.5.11",
+    cacheable: true,
+    note: "Use 404 instead when you do not know whether the removal is permanent."
   },
   {
     code: "411",
@@ -229,7 +260,8 @@ const HTTP_STATUSES = [
     code: "414",
     phrase: "URI Too Long",
     summary: "The URI provided was too long for the server to process",
-    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.5.15"
+    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.5.15",
+    cacheable: true
   },
   {
     code: "415",
@@ -241,7 +273,8 @@ const HTTP_STATUSES = [
     code: "416",
     phrase: "Range Not Satisfiable",
     summary: "The client has asked for a portion of the file (byte serving), but the server cannot supply that portion",
-    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.5.17"
+    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.5.17",
+    headers: ["Content-Range"]
   },
   {
     code: "417",
@@ -265,7 +298,8 @@ const HTTP_STATUSES = [
     code: "422",
     phrase: "Unprocessable Content",
     summary: "The server understands the content type and the syntax of the request content is correct, but it was unable to process the contained instructions",
-    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.5.21"
+    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.5.21",
+    note: "Use 422 when the syntax is valid but the content fails validation. Use 400 for malformed syntax."
   },
   {
     code: "423",
@@ -289,7 +323,8 @@ const HTTP_STATUSES = [
     code: "426",
     phrase: "Upgrade Required",
     summary: "The client should switch to a different protocol",
-    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.5.22"
+    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.5.22",
+    headers: ["Upgrade"]
   },
   {
     code: "428",
@@ -301,7 +336,8 @@ const HTTP_STATUSES = [
     code: "429",
     phrase: "Too Many Requests",
     summary: "The client has sent too many requests in a given amount of time (rate limiting). A Retry-After header may say how long to wait",
-    reference: "https://www.rfc-editor.org/rfc/rfc6585#section-4"
+    reference: "https://www.rfc-editor.org/rfc/rfc6585#section-4",
+    headers: ["Retry-After"]
   },
   {
     code: "431",
@@ -325,25 +361,29 @@ const HTTP_STATUSES = [
     code: "501",
     phrase: "Not Implemented",
     summary: "The server does not support the functionality required to fulfill the request",
-    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.6.2"
+    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.6.2",
+    cacheable: true
   },
   {
     code: "502",
     phrase: "Bad Gateway",
     summary: "The server, while acting as a gateway or proxy, received an invalid response from an inbound server",
-    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.6.3"
+    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.6.3",
+    note: "The upstream server sent an invalid response. Use 504 when the upstream server did not respond in time."
   },
   {
     code: "503",
     phrase: "Service Unavailable",
     summary: "The server is currently unable to handle the request due to a temporary overload or scheduled maintenance",
-    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.6.4"
+    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.6.4",
+    headers: ["Retry-After"]
   },
   {
     code: "504",
     phrase: "Gateway Timeout",
     summary: "The server, while acting as a gateway or proxy, did not receive a timely response from an upstream server",
-    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.6.5"
+    reference: "https://www.rfc-editor.org/rfc/rfc9110#section-15.6.5",
+    note: "The upstream server did not respond in time. Use 502 when it sent an invalid response."
   },
   {
     code: "505",

@@ -29,30 +29,41 @@ export default function KakandaHTTP() {
         <section key={group.digit} className="kakanda-http__group">
           <h2 className="kakanda-http__group__title">{group.name}</h2>
           <ul className="kakanda-http__result">
-            {group.statuses.map((status) => (
-              <li key={status.code} id={status.code} className="kakanda-http__result__item">
-                <a
-                  href={`#${status.code}`}
-                  className={`kakanda-http__status kakanda-http__status--${group.digit}`}
-                  aria-label={`Link to ${status.code} ${status.phrase}`}
-                >
-                  {status.code}
-                </a>
-                <div className="kakanda-http__result__item__explanation">
-                  <h3>
-                    {status.code} {status.phrase}
-                    {status.deprecated && <span className="kakanda-http__tag kakanda-http__tag--deprecated">Deprecated</span>}
-                  </h3>
-                  <p>{status.summary}</p>
-                  <a href={status.reference} rel="noopener">{rfcLabel(status.reference)}</a>
-                </div>
-              </li>
-            ))}
+            {group.statuses.map((status) => <StatusItem key={status.code} status={status} digit={group.digit} />)}
           </ul>
         </section>
       ))}
 
       {groups.length === 0 && <p className="kakanda-http__empty">No status codes match your search.</p>}
     </div>
+  );
+}
+
+function StatusItem({ status, digit }) {
+  return (
+    <li id={status.code} className="kakanda-http__result__item">
+      <a
+        href={`#${status.code}`}
+        className={`kakanda-http__status kakanda-http__status--${digit}`}
+        aria-label={`Link to ${status.code} ${status.phrase}`}
+      >
+        {status.code}
+      </a>
+      <div className="kakanda-http__result__item__explanation">
+        <h3>
+          {status.code} {status.phrase}
+          {status.deprecated && <span className="kakanda-http__tag kakanda-http__tag--deprecated">Deprecated</span>}
+          {status.cacheable && <span className="kakanda-http__tag">Cacheable by default</span>}
+        </h3>
+        <p>{status.summary}</p>
+        {status.headers && (
+          <p className="kakanda-http__headers">
+            Headers: {status.headers.map((header) => <code key={header}>{header}</code>)}
+          </p>
+        )}
+        {status.note && <p className="kakanda-http__note">{status.note}</p>}
+        <a href={status.reference} rel="noopener">{rfcLabel(status.reference)}</a>
+      </div>
+    </li>
   );
 }
