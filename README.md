@@ -22,7 +22,10 @@ Requires Node.js 22 or later.
 * Run `npm install`
 * Run `npm run build` to bundle `modules/` and React into `build/kakanda-http.js`
 * Run `npm run watch` to rebuild on every change
-* Run `npm test` to run the tests
+* Run `npm test` to run the unit tests
+* Run `npx playwright install chromium` once, then `npm run test:e2e` to run the browser tests
+
+CI runs both test suites on every push and pull request to `master`. It also rebuilds the bundle and fails if `build/kakanda-http.js` does not match the source.
 
 ## License
 Released under the MIT License, Copyright (c) 2017–ω Kunto Aji Kristianto.
